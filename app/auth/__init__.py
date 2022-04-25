@@ -66,3 +66,9 @@ def logout():
 def dashboard():
     return render_template('dashboard.html')
 
+@auth.route('/users')
+@login_required
+def browse_users():
+    data = User.query.all()
+    titles = [('email', 'Email'), ('registered_on', 'Registered On')]
+    return render_template('browse.html', titles=titles, data=data, User=User, record_type="Users")
