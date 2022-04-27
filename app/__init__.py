@@ -9,6 +9,7 @@ from flask_wtf.csrf import CSRFProtect
 from app.db.models import User
 from flask_bootstrap import Bootstrap5
 from app.simple_pages import simple_pages
+from app.bank import bank
 from app.context_processors import utility_text_processors
 login_manager = flask_login.LoginManager()
 
@@ -31,7 +32,7 @@ def create_app():
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.register_blueprint(auth)
     app.register_blueprint(simple_pages)
-
+    app.register_blueprint(bank)
     # add command function to cli commands
     app.cli.add_command(create_database)
     db.init_app(app)
