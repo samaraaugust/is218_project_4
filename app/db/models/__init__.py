@@ -9,14 +9,14 @@ class Bank(db.Model):
     __tablename__ = 'bank'
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(300), nullable=True, unique=False)
-    amount = db.Column(db.Float, nullable=True, unique=False)
+    amount = db.Column(db.String(300), nullable=True, unique=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = relationship("User", back_populates="bank", uselist=False)
 
     def get_id(self):
         return self.id
 
-    def __init__(self, type, amount):
+    def __init__(self, amount, type):
         self.type = type
         self.amount = amount
 
