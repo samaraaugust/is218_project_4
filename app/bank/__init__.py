@@ -9,6 +9,7 @@ bank = Blueprint('bank', __name__,
 @login_required
 def bank_upload():
     form = csv_upload()
+    
     try:
         return render_template('upload.html', form=form)
     except TemplateNotFound:
