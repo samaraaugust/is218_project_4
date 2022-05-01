@@ -39,3 +39,8 @@ def test_dashboard_not_logged_in(client):
     """if user is not logged in can not access dashboard gets sent back to login page"""
     response = client.get("/dashboard")
     assert response.headers["Location"] == "/login?next=%2Fdashboard"
+
+def test_denying_upload(client):
+    """if user is not logged in can not access bank page"""
+    response = client.post("/bank/upload")
+    assert response.headers["Location"] == "/login?next=%2Fbank%2Fupload"
