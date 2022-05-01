@@ -10,6 +10,7 @@
 
         <h2>Browse: Your Bank Transactions</h2>
         <h3>Current Balance:  ${{ final_val }}</h3>
+        <h3>USer if: {{ idNum }}</h3>
 
         {{ render_table(data) }}
         {% from 'bootstrap5/pagination.html' import render_pagination %}
