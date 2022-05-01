@@ -24,11 +24,26 @@ def application():
 @pytest.fixture()
 def add_user(application):
     with application.app_context():
-        user = User('test@email.com', 'Testing@')
+        user = User('test@email.com', 'tester')
         db.session.add(user)
         db.session.commit()
 
+class AuthActions:
+    def __init__(self, client):
+        self._client = client
 
+    def login(self, email="test@email.com", password="tester"):
+        return self._client.post(
+            "/login", data={"email": email, "password": password}
+        )
+
+    def logout(self):
+        return self._client.get("/logout")
+
+
+@pytest.fixture
+def auth(client):
+    return AuthActions(client)
 
 
 @pytest.fixture()

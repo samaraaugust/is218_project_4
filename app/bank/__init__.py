@@ -28,19 +28,19 @@ def bank_browse(page):
     balance_debit = 0
     data_sec = session.query(Bank).filter(Bank.type=='DEBIT').all()
     for i in data_sec:
-        print(i.amount)
+        #print(i.amount)
         balance_debit = balance_debit + float(i.amount)
-    print("D: ", balance_debit)
+    #print("D: ", balance_debit)
     data_cred = session.query(Bank).filter(Bank.type=='CREDIT').all()
     balance_credit = 0
     for p in data_cred:
-        print(p.amount)
+        #print(p.amount)
         balance_credit = balance_credit + float(p.amount)
-    print("finalC: ", balance_credit)
+    #print("finalC: ", balance_credit)
     final_val = str(balance_credit + balance_debit)
-    print("final Val: ", final_val)
+    #print("final Val: ", final_val)
     #data_sec = Bank.query.all()
-
+    session.close()
     try:
         return render_template('browse_transactions.html',data=data,pagination=pagination, data_sec=data_sec, data_cred=data_cred, final_val=final_val)
     except TemplateNotFound:

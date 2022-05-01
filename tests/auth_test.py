@@ -14,3 +14,9 @@ def test_auth_pages(client):
     response = client.get("/login")
     assert response.status_code == 200
 
+def test_successful_login(client, auth):
+    """Successful login redirects to the dashboard"""
+    assert client.get("/login").status_code == 200
+    response = auth.login()
+    print(response.data)
+    assert response.headers["Location"] == "/dashboard"
