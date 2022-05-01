@@ -6,12 +6,12 @@ class Config(object):
     TESTING = False
     SECRET_KEY = 'This is an INSECURE secret!! DO NOT use this in production!!'
     SESSION_COOKIE_SECURE = True
-    BOOTSTRAP_BOOTSWATCH_THEME = 'Simplex'
+    BOOTSTRAP_BOOTSWATCH_THEME = 'Lumen'
     DB_DIR = os.getenv('DB_DIR','database')
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(BASE_DIR,'..', DB_DIR, "db.sqlite")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', os.path.join(BASE_DIR, '..', 'uploads'))
-
+    LOG_DIR = os.path.join(BASE_DIR, '../logs')
 
 class ProductionConfig(Config):
     pass
