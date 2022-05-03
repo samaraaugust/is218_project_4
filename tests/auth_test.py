@@ -79,14 +79,7 @@ def test_already_registered(client, auth):
     response = auth.register()
     response2 = auth.register()
     assert "/login" == response2.headers["Location"]
-"""
-def test_wrong_password_login(client, auth):
-    #If a user login with the correct email but wrong password
-    response = auth.register()
-    response2 = client.post('/login', email="test@email.com", password="Tester1!")
-    print(response2.data)
-    assert response2.status_code == 100
-"""
+
 @pytest.mark.parametrize(
     ("email", "password", "confirm", "message"),
     (
