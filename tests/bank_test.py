@@ -27,3 +27,4 @@ def test_bank_pages(client):
     assert response.status_code == 302
     response = client.get("/bank/upload")
     assert response.status_code == 302
+

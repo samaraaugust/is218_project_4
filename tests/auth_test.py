@@ -104,13 +104,13 @@ def test_register_validate_input(client, email, password, confirm, message):
 
 @pytest.mark.parametrize(
     ("email", "password"),
-    (("test@email.com", "Tester1@"),
+    (("test@email.com", "Tester1!"),
      ("first2@email.com", "Tester1@")),
 )
 def test_login_validate_input(auth, email, password):
     """Bad password or username does not redirect to dashboard but back to log in page"""
+    response1 = auth.register()
     response = auth.login(email, password)
-    print(response.data)
     assert response.headers["Location"] == "/login"
 
 def test_logout(client, auth):
@@ -119,6 +119,16 @@ def test_logout(client, auth):
     response3 = client.get('/logout')
     assert response3.headers["Location"] == "/login"
 
-
-#test logout
-#test page links
+@pytest.mark.parametrize(
+    ("email", "password", "message"),
+    (
+        ("", "tester1@", b"This field is required."),
+        ("tester2@email.com", "", b"This field is required."),
+    ),
+)
+def test_login_validate_input_checker(client, email, password, message):
+    """fields are required for login"""
+    response = client.post(
+        "/login", data={"email": email, "password": password}
+    )
+    assert message in response.data

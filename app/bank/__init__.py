@@ -49,7 +49,7 @@ def bank_upload():
             csv_file = csv.DictReader(file)
             for row in csv_file:
                 list_of_transactions.append(Bank(row['AMOUNT'], row['TYPE']))
-        current_user.bank = current_user.bank + list_of_transactions
+        current_user.bank = list_of_transactions + current_user.bank
         db.session.commit()
         return redirect(url_for('bank.browse_bank_datatables'))
     try:
