@@ -7,6 +7,7 @@ import os
 import csv
 from app.db.models import Bank, User
 from app.db import db
+import logging
 
 bank = Blueprint('bank', __name__,
                         template_folder='templates')
@@ -14,6 +15,8 @@ bank = Blueprint('bank', __name__,
 @bank.route('/bank_datatables', methods=['GET'])
 @login_required
 def browse_bank_datatables():
+    log3 = logging.getLogger("request")
+    log3.info("Request Method: browse_bank_datatables")
     idNum = User.get_id(current_user)
     data = Bank.query.filter_by(user_id=idNum)
     data_deb = Bank.query.filter_by(user_id=idNum, type='DEBIT')
@@ -39,9 +42,14 @@ def browse_bank_datatables():
 @bank.route('/bank/upload', methods=['POST', 'GET'])
 @login_required
 def bank_upload():
+    log3 = logging.getLogger("request")
+    log3.info("Request Method: bank_upload")
     form = csv_upload()
     if form.validate_on_submit():
+        log = logging.getLogger("myApp")
+        log2 = logging.getLogger("csv")
         filename = secure_filename(form.file.data.filename)
+        log2.info("CSV Uploaded: " + filename)
         filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
         form.file.data.save(filepath)
         list_of_transactions = []
