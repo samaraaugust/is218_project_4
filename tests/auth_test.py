@@ -44,3 +44,31 @@ def test_denying_upload(client):
     """if user is not logged in can not access bank page"""
     response = client.post("/bank/upload")
     assert response.headers["Location"] == "/login?next=%2Fbank%2Fupload"
+
+def test_bad_password_confirmation_register(client):
+    response = client.post("/register", data={"email": "tester@email.com", "password": "Tester4@", "confirm": "tester"})
+    print(response.data)
+    assert b"Passwords must match" in response.data
+
+def test_email_registration(client):
+    """If email is not in correct format shows an error message"""
+    response = client.post("/register", data={"email": "sample", "password": "Tester1@", "confirm": "Tester1@"})
+    print(response.data)
+    assert b"Invalid email address." in response.data
+
+def test_email_login(client):
+    """If email is not in correct format shows an error message"""
+    response = client.post("/login", data={"email": "sample", "password": "Tester1@"})
+    assert b"Invalid email address." in response.data
+
+def test_bad_password_registration(client):
+    """If password does not meets requirements"""
+    response = client.post("/register", data={"email": "sample@email.com", "password": "Tester1", "confirm": "Tester1"})
+    print(response.data)
+    assert b"Invalid Password" in response.data
+
+def test_bad_password_login(client):
+    """If password does not meets requirements"""
+    response = client.post("/login", data={"email": "sample@email.com", "password": "Tester1"})
+    print(response.data)
+    assert b"Invalid Password" in response.data

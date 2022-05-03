@@ -32,11 +32,11 @@ class AuthActions:
     def __init__(self, client):
         self._client = client
 
-    def register(self, email="test@email.com", password="tester1"):
+    def register(self, email="test@email.com", password="Tester1@"):
         return self._client.post(
             "/register", data={"email": email, "password": password, "confirm": password}
         )
-    def login(self, email="test@email.com", password="tester1"):
+    def login(self, email="test@email.com", password="Tester1@"):
         return self._client.post(
             "/login", data={"email": email, "password": password}
         )
