@@ -72,3 +72,4 @@ def test_bad_password_login(client):
     response = client.post("/login", data={"email": "sample@email.com", "password": "Tester1"})
     print(response.data)
     assert b"Invalid Password" in response.data
+    
