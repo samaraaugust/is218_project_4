@@ -28,9 +28,10 @@ def browse_bank_datatables():
         balance_credit = balance_credit + float(p.amount)
     final_val = 0
     final_val = str(balance_credit + balance_debit)
-
+    value = Bank.query.filter_by(user_id=idNum).count()
+    print(value)
     try:
-        return render_template('browse_bank_datatables.html',data=data, final_val=final_val)
+        return render_template('browse_bank_datatables.html',data=data, final_val=final_val, value=value)
     except TemplateNotFound:
         abort(404)
 

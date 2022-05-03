@@ -9,8 +9,12 @@
         <a href="{{ url_for("bank.bank_upload") }}" class="btn col-3 mb-5 btn-info" role="button">Upload More Transactions</a>
         <h2>Browse: Your Bank Transactions</h2>
         <h3>Current Balance:  ${{ final_val }}</h3>
+        {% if value > 0 %}
+            {{ render_table(data) }}
+        {% else %}
+            <h3>No Transactions Were Added</h3>
+        {% endif %}
 
-{#        {{ render_table(data) }}#}
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>

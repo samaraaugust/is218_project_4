@@ -20,3 +20,10 @@ def test_bank_balance(client, auth):
     response3 = client.get("/bank_datatables")
     assert b"Current Balance:  $3900.0" in response3.data
     assert response3.status_code == 200
+
+def test_bank_pages(client):
+    """This makes the index page"""
+    response = client.get("/bank_datatables")
+    assert response.status_code == 302
+    response = client.get("/bank/upload")
+    assert response.status_code == 302
