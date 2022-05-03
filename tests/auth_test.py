@@ -1,3 +1,4 @@
+import pytest
 def test_request_main_menu_links(client):
     """This makes the index page"""
     response = client.get("/")
@@ -72,4 +73,52 @@ def test_bad_password_login(client):
     response = client.post("/login", data={"email": "sample@email.com", "password": "Tester1"})
     print(response.data)
     assert b"Invalid Password" in response.data
-    
+
+def test_already_registered(client, auth):
+    """If an email is already registered it redirects to the login page"""
+    response = auth.register()
+    response2 = auth.register()
+    assert "/login" == response2.headers["Location"]
+"""
+def test_wrong_password_login(client, auth):
+    #If a user login with the correct email but wrong password
+    response = auth.register()
+    response2 = client.post('/login', email="test@email.com", password="Tester1!")
+    print(response2.data)
+    assert response2.status_code == 100
+"""
+@pytest.mark.parametrize(
+    ("email", "password", "confirm", "message"),
+    (
+        ("", "tester1@", "Tester1@", b"This field is required."),
+        ("tester2@email.com", "", "tester", b"This field is required."),
+        ("tester2@email.com", "Tester1@", "", b"Passwords must match")
+    ),
+)
+def test_register_validate_input(client, email, password, confirm, message):
+    """fields are required when registering"""
+    response = client.post(
+        "/register", data={"email": email, "password": password, "confirm": confirm}
+    )
+    assert message in response.data
+
+@pytest.mark.parametrize(
+    ("email", "password"),
+    (("test@email.com", "Tester1@"),
+     ("first2@email.com", "Tester1@")),
+)
+def test_login_validate_input(auth, email, password):
+    """Bad password or username does not redirect to dashboard but back to log in page"""
+    response = auth.login(email, password)
+    print(response.data)
+    assert response.headers["Location"] == "/login"
+
+def test_logout(client, auth):
+    response = auth.register()
+    response2 = auth.login()
+    response3 = client.get('/logout')
+    assert response3.headers["Location"] == "/login"
+
+
+#test logout
+#test page links
