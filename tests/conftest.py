@@ -20,15 +20,33 @@ def application():
         yield application
         db.session.remove()
         # db.drop_all()
-
+"""
 @pytest.fixture()
 def add_user(application):
     with application.app_context():
-        user = User('test@email.com', 'Testing@')
+        user = User('test@email.com', 'tester')
         db.session.add(user)
         db.session.commit()
+"""
+class AuthActions:
+    def __init__(self, client):
+        self._client = client
+
+    def register(self, email="test@email.com", password="Tester1@"):
+        return self._client.post(
+            "/register", data={"email": email, "password": password, "confirm": password}
+        )
+    def login(self, email="test@email.com", password="Tester1@"):
+        return self._client.post(
+            "/login", data={"email": email, "password": password}
+        )
+    def logout(self):
+        return self._client.get("/logout")
 
 
+@pytest.fixture
+def auth(client):
+    return AuthActions(client)
 
 
 @pytest.fixture()

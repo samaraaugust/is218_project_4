@@ -5,12 +5,15 @@ from werkzeug.security import generate_password_hash
 from app.auth.forms import login_form, register_form
 from app.db import db
 from app.db.models import User
+import logging
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
 
 @auth.route('/register', methods=['POST', 'GET'])
 def register():
+    log3 = logging.getLogger("request")
+    log3.info("Request Method: register")
     if current_user.is_authenticated:
         return redirect(url_for('auth.dashboard'))
     form = register_form()
@@ -33,6 +36,8 @@ def register():
 
 @auth.route('/login', methods=['POST', 'GET'])
 def login():
+    log3 = logging.getLogger("request")
+    log3.info("Request Method: login")
     form = login_form()
     if current_user.is_authenticated:
         return redirect(url_for('auth.dashboard'))
@@ -53,6 +58,8 @@ def login():
 @auth.route("/logout")
 @login_required
 def logout():
+    log3 = logging.getLogger("request")
+    log3.info("Request Method: logout")
     """Logout the current user."""
     user = current_user
     user.authenticated = False
@@ -64,11 +71,15 @@ def logout():
 @auth.route('/dashboard')
 @login_required
 def dashboard():
+    log3 = logging.getLogger("request")
+    log3.info("Request Method: dashboard")
     return render_template('dashboard.html')
 
 @auth.route('/users')
 @login_required
 def browse_users():
+    log3 = logging.getLogger("request")
+    log3.info("Request Method: browse_users")
     data = User.query.all()
     titles = [('email', 'Email'), ('registered_on', 'Registered On')]
     return render_template('browse.html', titles=titles, data=data, User=User, record_type="Users")
